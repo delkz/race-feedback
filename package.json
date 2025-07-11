@@ -2,20 +2,28 @@
   "name": "race-feedback",
   "version": "1.0.0",
   "description": "Race Feedback Bot is a simple, open-source project that reads telemetry data from iRacing and gives you actionable feedback on how to improve your driving performance.",
+  "homepage": "https://github.com/delkz/race-feedback#readme",
+  "bugs": {
+    "url": "https://github.com/delkz/race-feedback/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delkz/race-feedback.git"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "license": "ISC",
   "author": "",
-  "type": "module",
-  "main": "dist/main.ts",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky",
-    "lint": "eslint . --ext .ts,.tsx",
-    "dev": "npx tsx src/main.ts",
-    "build": "tsc",
-    "start": "node dist/main.js"
+    "dev": "concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspaces"
   },
   "dependencies": {
-    "axios": "^1.6.0"
+    "concurrently": "9.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
