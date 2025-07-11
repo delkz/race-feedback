@@ -1,5 +1,5 @@
 import { BaseLLM } from './BaseLLM';
-import { OllamaProvider } from './OllamaProvider';
+import { OllamaProvider } from './providers/OllamaProvider';
 
 export function getLLM(provider: string, options: any): BaseLLM {
   switch (provider) {

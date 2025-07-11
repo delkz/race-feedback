@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BaseLLM } from './BaseLLM';
+import { BaseLLM } from '../BaseLLM';
 
 export class OllamaProvider implements BaseLLM {
   private model: string;
