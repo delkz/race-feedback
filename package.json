@@ -1,0 +1,23 @@
+{
+  "name": "race-feedback",
+  "version": "1.0.0",
+  "description": "Race Feedback Bot is a simple, open-source project that reads telemetry data from iRacing and gives you actionable feedback on how to improve your driving performance.",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint/js": "^9.30.1",
+    "eslint": "^9.30.1",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "typescript-eslint": "^8.36.0"
+  }
+}
