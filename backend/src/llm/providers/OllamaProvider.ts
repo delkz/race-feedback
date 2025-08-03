@@ -9,6 +9,8 @@ export class OllamaProvider implements BaseLLM {
   }
 
 async generateFeedbackStream(prompt: string, onChunk: (text: string) => void) {
+  console.log('🔄 Iniciando geração de feedback com Ollama...');
+  
   const response = await axios.post(
     'http://localhost:11434/api/generate',
     {
@@ -33,6 +35,7 @@ async generateFeedbackStream(prompt: string, onChunk: (text: string) => void) {
           const text = parsed.response || parsed.message?.content || '';
 
           buffer += text;
+          // console.log('🔄 Chunk recebido:', text);
           onChunk(text); //`speak(text)` or `console.log(text)`
         } catch (e) {
           console.error('Erro ao parsear chunk:', line);
@@ -41,6 +44,7 @@ async generateFeedbackStream(prompt: string, onChunk: (text: string) => void) {
     });
 
     response.data.on('end', () => {
+      console.log('✅ Geração de feedback concluída.');
       resolve();
     });
 

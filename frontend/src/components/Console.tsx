@@ -1,17 +1,46 @@
-
+import { useEffect, useRef, useState } from "react";
+import { useStore } from "../hooks/useStore";
 
 const Console = () => {
+    const [feedback, setFeedback] = useState('');
+    const consoleRef = useRef<HTMLDivElement>(null);
+    const setConnectionToServer = useStore((state) => state.setConnectionToServer);
+
+    useEffect(() => {
+        const eventSource = new EventSource('http://localhost:3000/stream');
+        setConnectionToServer(true);
+        
+        eventSource.onmessage = (event) => {
+            setFeedback(prev => prev + event.data);
+        };
+
+        eventSource.onerror = (err) => {
+            setConnectionToServer(false);
+            console.error('Erro no SSE:', err);
+            eventSource.close();
+        };
+
+        return () => {
+            eventSource.close(); // sempre limpar
+        };
+    }, []);
+
+    useEffect(() => {
+        if (consoleRef.current) {
+            consoleRef.current.scrollTop = consoleRef.current.scrollHeight;
+        }
+    }, [feedback]);
 
     return (
-        <div className='md:w-1/2 rounded-lg p-6 bg-base-300 h-full overflow-scroll'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae nobis atque quidem iure libero, ipsam delectus nemo nesciunt placeat fuga, rerum distinctio! A, distinctio consequuntur fugit corrupti magnam dignissimos. Et?
-            Similique doloremque iste commodi odio deleniti ipsa ad odit quas, provident illum. Totam modi quo voluptatem, praesentium consequuntur, quod officiis odit molestias optio ipsa error beatae enim cumque fugiat at!
-            Maiores, error, iure harum blanditiis itaque hic, assumenda debitis voluptatem qui quaerat tenetur officia ipsa illo et nulla! Esse a dolores veritatis odit cupiditate quas harum impedit aperiam delectus! Nisi.
-            Necessitatibus cumque fuga a perferendis voluptatem error sequi debitis quo. Ex rem repellendus nostrum, eaque molestiae corrupti maxime dicta id quod excepturi tempora nam laboriosam, odio voluptatem doloribus velit esse!
-            Adipisci, impedit! Ad illum aperiam beatae obcaecati iure? Ab quasi quod quibusdam inventore incidunt, vero voluptate quam hic nulla et veritatis aut placeat voluptas, ullam est accusantium maiores animi dignissimos?
+        <div
+            ref={consoleRef}
+            className="md:w-1/2 rounded-lg p-6 bg-base-300 h-full overflow-auto"
+        >
+            <pre className="whitespace-pre-wrap font-mono break-words text-sm">
+                {feedback || 'Aguardando resposta...'}
+            </pre>
         </div>
+    );
+};
 
-    )
-}
-
-export default Console
+export default Console;
